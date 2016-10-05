@@ -22,18 +22,17 @@ void cmd_att_cb(const mavros_msgs::AttitudeTarget::ConstPtr& msg) {
 }
 
 uint16_t scaleInput(const double input, const double val_min, const double val_max) {
-	double val = 0.0;
+	double val = input;
 	uint16_t out = 0.0;
 
-	if( input < val_min )
+	if( val < val_min )
 		val = val_min;
-	if( input > val_max )
+	if( val > val_max )
 		val = val_max;
-
-	const uint16_t pwm_w = PWM_MAX - PWM_MIN;
-	const double val_w = val_max - val_min;
-
-	return ( uint16_t( ( val / val_w ) * pwm_w ) + PWM_MIN );
+	
+	double slope = double(PWM_MAX - PWM_MIN) / (val_max - val_min);
+	
+	return (PWM_MIN + uint16_t(slope * (val - val_min)));
 }
 
 //================================//
@@ -43,7 +42,7 @@ int main(int argc, char **argv) {
 	//================================//
 	// Initialize node                //
 	//================================//
-	ros::init(argc, argv, "mavel" );
+	ros::init(argc, argv, "mavrc" );
 	ros::NodeHandle nh( ros::this_node::getName() );
 
 	double commandTimeout = 0.1; //TODO: Params
@@ -110,6 +109,8 @@ int main(int argc, char **argv) {
 			tf::Quaternion q;
 			tf::quaternionMsgToTF(attIn.orientation, q);
 			tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
+			
+			//TODO: Make sure that mapping +/- roll, pitch, yaw, aligns with +/- PWM
 
 			rc_out.channels[0] = scaleInput(roll, -param_tilt_max, param_tilt_max);	//Roll Angle
 			rc_out.channels[1] = scaleInput(pitch, -param_tilt_max, param_tilt_max);	//Pitch Angle
