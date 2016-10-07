@@ -29,9 +29,9 @@ uint16_t scaleInput(const double input, const double val_min, const double val_m
 		val = val_min;
 	if( val > val_max )
 		val = val_max;
-	
+
 	double slope = double(PWM_MAX - PWM_MIN) / (val_max - val_min);
-	
+
 	return (PWM_MIN + uint16_t(slope * (val - val_min)));
 }
 
@@ -109,13 +109,14 @@ int main(int argc, char **argv) {
 			tf::Quaternion q;
 			tf::quaternionMsgToTF(attIn.orientation, q);
 			tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
-			
+
 			//TODO: Make sure that mapping +/- roll, pitch, yaw, aligns with +/- PWM
 
-			rc_out.channels[0] = scaleInput(roll, -param_tilt_max, param_tilt_max);	//Roll Angle
-			rc_out.channels[1] = scaleInput(pitch, -param_tilt_max, param_tilt_max);	//Pitch Angle
+			//CRITICAL TO INVEARSE PITCH AND YAW TO MATCH STANDARD RC CONFIG
+			rc_out.channels[0] = scaleInput( roll, -param_tilt_max, param_tilt_max);	//Roll Angle
+			rc_out.channels[1] = scaleInput( -pitch, -param_tilt_max, param_tilt_max);	//Pitch Angle
 			rc_out.channels[2] = scaleInput( attIn.thrust, 0.0, 1.0); //Thrust
-			rc_out.channels[3] = scaleInput( attIn.body_rate.z, -param_rate_yaw_max, param_rate_yaw_max );	//Yaw Rate
+			rc_out.channels[3] = scaleInput( -attIn.body_rate.z, -param_rate_yaw_max, param_rate_yaw_max );	//Yaw Rate
 
 			rc_out.channels[4] = rc_out.CHAN_NOCHANGE;
 			rc_out.channels[5] = rc_out.CHAN_NOCHANGE;
