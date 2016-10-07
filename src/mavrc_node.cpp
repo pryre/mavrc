@@ -114,7 +114,7 @@ int main(int argc, char **argv) {
 
 			//CRITICAL TO INVEARSE PITCH AND YAW TO MATCH STANDARD RC CONFIG
 			rc_out.channels[0] = scaleInput( roll, -param_tilt_max, param_tilt_max);	//Roll Angle
-			rc_out.channels[1] = scaleInput( -pitch, -param_tilt_max, param_tilt_max);	//Pitch Angle
+			rc_out.channels[1] = scaleInput( pitch, -param_tilt_max, param_tilt_max);	//Pitch Angle
 			rc_out.channels[2] = scaleInput( attIn.thrust, 0.0, 1.0); //Thrust
 			rc_out.channels[3] = scaleInput( -attIn.body_rate.z, -param_rate_yaw_max, param_rate_yaw_max );	//Yaw Rate
 

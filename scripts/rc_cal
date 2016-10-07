@@ -1,0 +1,194 @@
+#!/usr/bin/env python2
+
+import rospy
+import time
+from mavros_msgs.msg import OverrideRCIn
+
+RC_MIN = 1000
+RC_MID = 1500
+RC_MAX = 2000
+
+rc_out = OverrideRCIn()
+pub = rospy.Publisher('/mavros/rc/override', OverrideRCIn, queue_size=10)
+
+def send_rc():
+	for i in [0]*25:
+		pub.publish(rc_out)
+		time.sleep(0.05)
+
+
+def main():
+	rospy.init_node("rc_cal", anonymous=True)
+
+	rospy.loginfo("Ready to send calibration commands")
+
+	rc_out.channels[0] = RC_MID;	#Roll
+	rc_out.channels[1] = RC_MID;	#Pitch
+	rc_out.channels[2] = RC_MIN;	#Throttle
+	rc_out.channels[3] = RC_MID;	#Yaw
+	rc_out.channels[4] = RC_MIN;	#Mode
+	rc_out.channels[5] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[6] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[7] = rc_out.CHAN_NOCHANGE;
+	rospy.loginfo(rc_out)
+	send_rc()
+
+	rospy.loginfo("Press [ENTER] to move to the next step: Throttle high")
+	raw_input()
+
+	rc_out.channels[0] = RC_MID;	#Roll
+	rc_out.channels[1] = RC_MID;	#Pitch
+	rc_out.channels[2] = RC_MAX;	#Throttle
+	rc_out.channels[3] = RC_MID;	#Yaw
+	rc_out.channels[4] = RC_MIN;	#Mode
+	rc_out.channels[5] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[6] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[7] = rc_out.CHAN_NOCHANGE;
+	rospy.loginfo(rc_out)
+	send_rc()
+
+	rospy.loginfo("Press [ENTER] to move to the next step: Throttle low")
+	raw_input()
+
+	rc_out.channels[0] = RC_MID;	#Roll
+	rc_out.channels[1] = RC_MID;	#Pitch
+	rc_out.channels[2] = RC_MIN;	#Throttle
+	rc_out.channels[3] = RC_MID;	#Yaw
+	rc_out.channels[4] = RC_MIN;	#Mode
+	rc_out.channels[5] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[6] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[7] = rc_out.CHAN_NOCHANGE;
+	rospy.loginfo(rc_out)
+	send_rc()
+
+	rospy.loginfo("Press [ENTER] to move to the next step: Yaw right")
+	raw_input()
+
+	rc_out.channels[0] = RC_MID;	#Roll
+	rc_out.channels[1] = RC_MID;	#Pitch
+	rc_out.channels[2] = RC_MIN;	#Throttle
+	rc_out.channels[3] = RC_MAX;	#Yaw
+	rc_out.channels[4] = RC_MIN;	#Mode
+	rc_out.channels[5] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[6] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[7] = rc_out.CHAN_NOCHANGE;
+	rospy.loginfo(rc_out)
+	send_rc()
+
+	rospy.loginfo("Press [ENTER] to move to the next step: Yaw left")
+	raw_input()
+
+	rc_out.channels[0] = RC_MID;	#Roll
+	rc_out.channels[1] = RC_MID;	#Pitch
+	rc_out.channels[2] = RC_MIN;	#Throttle
+	rc_out.channels[3] = RC_MIN;	#Yaw
+	rc_out.channels[4] = RC_MIN;	#Mode
+	rc_out.channels[5] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[6] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[7] = rc_out.CHAN_NOCHANGE;
+	rospy.loginfo(rc_out)
+	send_rc()
+
+	rospy.loginfo("Press [ENTER] to move to the next step: Roll right")
+	raw_input()
+
+	rc_out.channels[0] = RC_MAX;	#Roll
+	rc_out.channels[1] = RC_MID;	#Pitch
+	rc_out.channels[2] = RC_MIN;	#Throttle
+	rc_out.channels[3] = RC_MID;	#Yaw
+	rc_out.channels[4] = RC_MIN;	#Mode
+	rc_out.channels[5] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[6] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[7] = rc_out.CHAN_NOCHANGE;
+	rospy.loginfo(rc_out)
+	send_rc()
+
+	rospy.loginfo("Press [ENTER] to move to the next step: Roll left")
+	raw_input()
+
+	rc_out.channels[0] = RC_MIN;	#Roll
+	rc_out.channels[1] = RC_MID;	#Pitch
+	rc_out.channels[2] = RC_MIN;	#Throttle
+	rc_out.channels[3] = RC_MID;	#Yaw
+	rc_out.channels[4] = RC_MIN;	#Mode
+	rc_out.channels[5] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[6] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[7] = rc_out.CHAN_NOCHANGE;
+	rospy.loginfo(rc_out)
+	send_rc()
+
+	rospy.loginfo("Press [ENTER] to move to the next step: Pitch down")
+	raw_input()
+
+	rc_out.channels[0] = RC_MID;	#Roll
+	rc_out.channels[1] = RC_MAX;	#Pitch
+	rc_out.channels[2] = RC_MIN;	#Throttle
+	rc_out.channels[3] = RC_MID;	#Yaw
+	rc_out.channels[4] = RC_MIN;	#Mode
+	rc_out.channels[5] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[6] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[7] = rc_out.CHAN_NOCHANGE;
+	rospy.loginfo(rc_out)
+	send_rc()
+
+	rospy.loginfo("Press [ENTER] to move to the next step: Pitch up")
+	raw_input()
+
+	rc_out.channels[0] = RC_MID;	#Roll
+	rc_out.channels[1] = RC_MIN;	#Pitch
+	rc_out.channels[2] = RC_MIN;	#Throttle
+	rc_out.channels[3] = RC_MID;	#Yaw
+	rc_out.channels[4] = RC_MIN;	#Mode
+	rc_out.channels[5] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[6] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[7] = rc_out.CHAN_NOCHANGE;
+	rospy.loginfo(rc_out)
+	send_rc()
+
+	rospy.loginfo("Press [ENTER] to move to the next step: Center stick, low throttle")
+	raw_input()
+
+	rc_out.channels[0] = RC_MID;	#Roll
+	rc_out.channels[1] = RC_MID;	#Pitch
+	rc_out.channels[2] = RC_MIN;	#Throttle
+	rc_out.channels[3] = RC_MID;	#Yaw
+	rc_out.channels[4] = RC_MIN;	#Mode
+	rc_out.channels[5] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[6] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[7] = rc_out.CHAN_NOCHANGE;
+	rospy.loginfo(rc_out)
+	send_rc()
+
+	rospy.loginfo("Press [ENTER] to move to the next step: Mode high")
+	raw_input()
+
+	rc_out.channels[0] = RC_MID;	#Roll
+	rc_out.channels[1] = RC_MID;	#Pitch
+	rc_out.channels[2] = RC_MIN;	#Throttle
+	rc_out.channels[3] = RC_MID;	#Yaw
+	rc_out.channels[4] = RC_MAX;	#Mode
+	rc_out.channels[5] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[6] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[7] = rc_out.CHAN_NOCHANGE;
+	rospy.loginfo(rc_out)
+	send_rc()
+
+	rospy.loginfo("Press [ENTER] to move to the next step: Center stick, low throttle")
+	raw_input()
+
+	rc_out.channels[0] = RC_MID;	#Roll
+	rc_out.channels[1] = RC_MID;	#Pitch
+	rc_out.channels[2] = RC_MIN;	#Throttle
+	rc_out.channels[3] = RC_MID;	#Yaw
+	rc_out.channels[4] = RC_MIN;	#Mode
+	rc_out.channels[5] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[6] = rc_out.CHAN_NOCHANGE;
+	rc_out.channels[7] = rc_out.CHAN_NOCHANGE;
+	rospy.loginfo(rc_out)
+	send_rc()
+
+	rospy.loginfo("Complete!")
+
+
+if __name__ == '__main__':
+	main()
